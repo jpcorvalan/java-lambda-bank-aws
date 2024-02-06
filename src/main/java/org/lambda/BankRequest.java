@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class BankRequest {
     private BigDecimal amount;  // Cantidad del préstamo
     private Integer term;       // En cuantas cuotas se paga
-    private BigDecimal rate;    // La tasa de interés acordada
+    private BigDecimal rate;    // La tasa de interés acordada (porcentaje, por ejemplo: 1.3%, 2.4%, etc)
 
     public BigDecimal getAmount() {
         return amount;
