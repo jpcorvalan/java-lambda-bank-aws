@@ -8,12 +8,16 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 /**
- * Fórmula para aplicar
+ * Se debe crear una Lambda para AWS en la cual un usuario solicitará un préstamo bancario
+ * Se pasarán como datos el monto del préstamo, la tasa de interés mensual y el plazo de pago en meses
+ * Se debe devolver los datos según la siguiente fórmula:
+ *
+ * Cuota mensual = (P * i) / (1 - (1 + i) ^ (-n))
+ *
  * P = Monto del préstamo (está en el Request [amount])
  * i = Tasa de interés mensual (está en el Request [rate])
  * n = Plazo del crédito en meses (está en el Request [term])
- * <p>
- * Cuota mensual = (P * i) / (1 - (1 + i) ^ (-n))
+ *
  * Se restan 0.2% de interés si el solicitante tiene cuenta bancaria en la entidad
  */
 
@@ -46,10 +50,10 @@ public class LambdaBank implements RequestHandler<BankRequest, BankResponse> {
         BankResponse bankResponse = new BankResponse();
 
         bankResponse.setQuota(monthlyPayment);
-        bankResponse.setRate(monthlyRate);
+        bankResponse.setRate(monthlyRate.multiply(BigDecimal.valueOf(100)));
         bankResponse.setTerm(term);
         bankResponse.setQuotaWithAcc(monthlyPaymentWithAcc);
-        bankResponse.setRateWithAcc(monthlyRateWithAcc);
+        bankResponse.setRateWithAcc(monthlyRateWithAcc.multiply(BigDecimal.valueOf(100)));
         bankResponse.setTermWithAcc(term);
 
         return bankResponse;
